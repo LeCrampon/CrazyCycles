@@ -17,8 +17,18 @@ public class CameraSmoothFollow : MonoBehaviour
     [SerializeField]
     private Transform _target;
 
+    public BikeController _playerController;
+
+
+    [SerializeField]
+    private float _heightOffsetRagdoll;
+    [SerializeField]
+    private float _distanceOffsetRagdoll;
+
 
     private Vector3 velocity = Vector3.zero;
+
+    private float zoomBackOffset = 0;
 
     private void Start()
     {
@@ -29,10 +39,24 @@ public class CameraSmoothFollow : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 newPos = _target.position - _target.forward * _distanceOffset;
-        newPos = new Vector3(newPos.x, newPos.y + _heightOffset, newPos.z);
-        transform.position = Vector3.SmoothDamp(transform.position, newPos, ref velocity, smoothPosFactor );
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_target.position - transform.position), smoothRotFactor * Time.fixedDeltaTime);
+        if (!_playerController.isRagdoll)
+        {
+            Vector3 newPos = _target.position - _target.forward * _distanceOffset;
+            newPos = new Vector3(newPos.x, newPos.y + _heightOffset, newPos.z);
+            transform.position = Vector3.SmoothDamp(transform.position, newPos, ref velocity, smoothPosFactor);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_target.position - transform.position), smoothRotFactor * Time.fixedDeltaTime);
+        }
+        else
+        {
+            ZoomBack();
+        }
+   
         
+    }
+
+    private void ZoomBack()
+    {
+
+       transform.position -= transform.forward/8;
     }
 }

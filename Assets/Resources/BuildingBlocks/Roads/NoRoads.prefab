@@ -210,6 +210,7 @@ Transform:
   - {fileID: 2241164932123588610}
   - {fileID: 1955080325014634573}
   - {fileID: 344054515034987086}
+  - {fileID: 6877124218062571391}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -368,6 +369,81 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 170268240685024024}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &989420709525377054
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5895079551274566383}
+    m_Modifications:
+    - target: {fileID: 1933557256711111212, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_Name
+      value: SavePointTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6c6e51ac39057a54a8546ca87b3ded83, type: 3}
+--- !u!4 &6877124218062571391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5965955514867636065, guid: 6c6e51ac39057a54a8546ca87b3ded83,
+    type: 3}
+  m_PrefabInstance: {fileID: 989420709525377054}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2456899328379671658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -512,6 +588,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9078327473854751962, guid: 91ffbad5f8219c346ab94c38e7a0d651,
         type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    - target: {fileID: 9078327473854751962, guid: 91ffbad5f8219c346ab94c38e7a0d651,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -589,6 +670,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hausmann2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bumper
       objectReference: {fileID: 0}
     - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
         type: 3}
@@ -1067,6 +1153,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9078327473854751962, guid: 91ffbad5f8219c346ab94c38e7a0d651,
         type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    - target: {fileID: 9078327473854751962, guid: 91ffbad5f8219c346ab94c38e7a0d651,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1144,6 +1235,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hausmann2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bumper
       objectReference: {fileID: 0}
     - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
         type: 3}
@@ -1312,6 +1408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9078327473854751962, guid: 91ffbad5f8219c346ab94c38e7a0d651,
         type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    - target: {fileID: 9078327473854751962, guid: 91ffbad5f8219c346ab94c38e7a0d651,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1389,6 +1490,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hausmann2 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bumper
       objectReference: {fileID: 0}
     - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
         type: 3}
@@ -1554,6 +1660,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hausmann2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bumper
       objectReference: {fileID: 0}
     - target: {fileID: 8800516565905384412, guid: ba21f70fc9ea1d147a5f991a5e6a772c,
         type: 3}

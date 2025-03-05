@@ -61,6 +61,7 @@ public class BikeController : MonoBehaviour
     private bool _braking = false;
 
 
+
     public bool Braking   // property
     {
         get { return _braking; }   // get method
@@ -109,6 +110,15 @@ public class BikeController : MonoBehaviour
     [SerializeField]
     private BikeAudio _bikeAudio;
 
+    [Header("RagDoll Management")]
+    private Quaternion startingRotation;
+    private Vector3 lastSavedPosition;
+    [SerializeField]
+    private Collider ragdollCollider;
+    private Vector3 oldCenterOfMass;
+    [SerializeField]
+    public bool isRagdoll = false;
+
     private void Awake()
     {
         _bikeInput = new BikeInput();
@@ -126,7 +136,12 @@ public class BikeController : MonoBehaviour
     {
         //Store the starting Position of the camera Target
         cameraTargetPosition = cameraTarget.transform.localPosition;
+        oldCenterOfMass = rigidBody.centerOfMass;
         rigidBody.centerOfMass = new Vector3(rigidBody.centerOfMass.x, rigidBody.centerOfMass.y + .5f, rigidBody.centerOfMass.z);
+
+        //Initialising positions & rotations
+        startingRotation = transform.rotation;
+        lastSavedPosition = transform.position;
     }
 
     private void OnEnable()
@@ -140,6 +155,15 @@ public class BikeController : MonoBehaviour
         ////GESTION DE L'AUDIO
         if (_grounded )
         {
+            if (_currentSpeed > 0.2)
+            {
+                _bikeAudio.StartGroundedAudio();
+            }
+            else
+            {
+                _bikeAudio.StopGroundedAudio();
+            }
+
             if (_bikeAudio.IsFastRunningClipPlaying())
             {
                 _bikeAudio.SetFastRunningAudioSpeed(_currentSpeed);
@@ -171,22 +195,29 @@ public class BikeController : MonoBehaviour
                     _bikeAudio.SwitchToLowerGear();
                 }
             }
+
+            if (_braking)
+            {
+                _bikeAudio.StartBrakingLoopAudio();
+            }
+            else
+            {
+                _bikeAudio.StopBrakingLoopAudio();
+            }
         }
         else
         {
-            _bikeAudio.StopAllClips();
+            _bikeAudio.StopGroundedAudio();
         }
-        //if (_currentSpeed > 0 && !_bikeAudio.IsSlowRunningClipPlaying())
-        //{
-        //    _bikeAudio.PlaySlowRunningAudio();
-        //    Debug.Log("Playin'");
-        //}
-        //else if(_currentSpeed == 0 && _bikeAudio.IsRunningClipPlaying())
-        //{
-        //    _bikeAudio.StopAllClips();
-        //    Debug.Log("Stoppin'");
-        //}
 
+        if(_currentSpeed >= _maxSpeed / 3)
+        {
+            _bikeAudio.StartWindAudio();
+        }
+        else
+        {
+            _bikeAudio.StopWindAudio();
+        }
       
     }
 
@@ -197,78 +228,82 @@ public class BikeController : MonoBehaviour
         _currentSpeed = rigidBody.velocity.magnitude; 
         _moving = _currentSpeed == 0 ? false : true;
 
-
+        //Sound Management
         ManageBikeAudio();
 
-        if (_moving)
+        if (!isRagdoll)
         {
-            TurnBike();
-        }
-
-        if (_currentSpeed > _maxSpeed / 3)
-		{
-            if (animeLines.activeInHierarchy == false)
-                animeLines.SetActive(true);
-        }
-
-		else
-		{
-            if (animeLines.activeInHierarchy == true)
-                StartCoroutine(FadeOutCanvas());
-        }
-        if (_grounded)
-        {
-            if (accelerating)
+            if (_moving)
             {
-                if (_currentSpeed < _maxSpeed)
+                TurnBike();
+            }
+
+            if (_currentSpeed > _maxSpeed / 3)
+            {
+                if (animeLines.activeInHierarchy == false)
+                    animeLines.SetActive(true);
+            }
+
+            else
+            {
+                if (animeLines.activeInHierarchy == true)
+                    StartCoroutine(FadeOutCanvas());
+            }
+            if (_grounded)
+            {
+                if (accelerating)
                 {
+                    if (_currentSpeed < _maxSpeed)
+                    {
 
-                    //Acceleration
-                    //rigidBody.velocity = Vector3.Lerp(rigidBody.velocity, _vehicleModel.transform.forward * _maxSpeed, Time.fixedDeltaTime * _acceleration);
-                    rigidBody.AddForce(_vehicleModel.transform.forward * _acceleration, ForceMode.Acceleration);
+                        //Acceleration
+                        //rigidBody.velocity = Vector3.Lerp(rigidBody.velocity, _vehicleModel.transform.forward * _maxSpeed, Time.fixedDeltaTime * _acceleration);
+                        rigidBody.AddForce(_vehicleModel.transform.forward * _acceleration, ForceMode.Acceleration);
 
-                    _currentAcceleration += _acceleration;
+                        _currentAcceleration += _acceleration;
+                    }
                 }
+                else
+                {
+                    //Stop acceleration
+                    _currentAcceleration = 0;
+                }
+
+                //Braking
+                if (_braking)
+                {
+                    if (_currentSpeed > 0.01 && _moving && _currentBraking < _brakingMax)
+                    {
+                        _currentBraking += _brakingStep;
+                        rigidBody.AddForce(-rigidBody.velocity * _brakingStep, ForceMode.Force);
+                    }
+
+                }
+                else
+                {
+                    _currentBraking = 0;
+                }
+
+                //Debug.Log("============= Current acceleration : " + _currentAcceleration);
+                //Debug.Log("xxxxxxxxxxxxxxxxxxxx Current braking : " + _currentBraking);
+            }
+
+            if (_braking && _currentSpeed > 0)
+            {
+                ActivateFrictionParticles(true);
+
+
             }
             else
             {
-                //Stop acceleration
-                _currentAcceleration = 0;
-            }
-
-            //Braking
-            if (_braking)
-            {
-                if (_currentSpeed > 0.01 && _moving && _currentBraking < _brakingMax)
-                {
-                    _currentBraking += _brakingStep;
-                    rigidBody.AddForce(-rigidBody.velocity * _brakingStep, ForceMode.Force);
-                }
+                ActivateFrictionParticles(false);
 
             }
-            else
-            {
-                _currentBraking = 0;
-            }
-
-            //Debug.Log("============= Current acceleration : " + _currentAcceleration);
-            //Debug.Log("xxxxxxxxxxxxxxxxxxxx Current braking : " + _currentBraking);
         }
-
-        if(_braking && _currentSpeed > 0)
-		{
-            ActivateFrictionParticles(true);
-
-
-		}
-		else
-		{
-            ActivateFrictionParticles(false);
-
-        }
+       
 
         Debug.DrawRay(new Vector3(_vehicleModel.transform.position.x, _vehicleModel.transform.position.y + .5f, _vehicleModel.transform.position.z), -_vehicleModel.transform.forward, Color.red);
-                            Debug.DrawRay(_vehicleModel.transform.position, _vehicleModel.transform.forward, Color.blue);
+        Debug.DrawRay(_vehicleModel.transform.position, _vehicleModel.transform.forward, Color.blue);
 
         _mainCamera.fieldOfView = Mathf.Lerp(60, 75, _currentSpeed/_maxSpeed);
     }
@@ -284,11 +319,14 @@ public class BikeController : MonoBehaviour
     {
         CheckGround();
 
-       
 
-        if(_grounded)
-            _bikeAnimation.RotateWheelBones(_currentSpeed / 3);
-        _bikeAnimation.RotateFrontBone(_turnValue);
+        if (!isRagdoll)
+        {
+            if (_grounded)
+                _bikeAnimation.RotateWheelBones(_currentSpeed / 3);
+            _bikeAnimation.RotateFrontBone(_turnValue);
+        }
+      
     }
     private void CheckGround()
     {
@@ -301,11 +339,15 @@ public class BikeController : MonoBehaviour
             hitNormal = hit.normal;
             //transform.up -= (transform.up - hit.normal) * 0.1f;
             RaycastHit hitBack;
-            if (Physics.Raycast(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up, out hitBack, 1f, groundMask))
+            if (!isRagdoll)
             {
-                transform.up -= (transform.up - (hit.normal+ hitBack.normal)) * 0.1f; 
-                Debug.DrawRay(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up * hit.distance, Color.yellow);
+                if (Physics.Raycast(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up, out hitBack, 1f, groundMask))
+                {
+                    transform.up -= (transform.up - (hit.normal + hitBack.normal)) * 0.1f;
+                    Debug.DrawRay(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up * hit.distance, Color.yellow);
+                }
             }
+           
         }
         else
         {
@@ -396,7 +438,7 @@ public class BikeController : MonoBehaviour
     private void OnBrake()
     {
         _braking = true;
-        _bikeAudio.PlayBrakingClip();
+
     }
 
     private void OnBrakeStop()
@@ -411,10 +453,70 @@ public class BikeController : MonoBehaviour
 
     private void OnJump()
     {
-        if (_grounded)
+        if (!isRagdoll)
         {
-            rigidBody.AddForce(Vector3.up * _jumpValue);
+            if (_grounded)
+            {
+                rigidBody.AddForce(Vector3.up * _jumpValue);
+            }
         }
-        Debug.Log("Called Wrong");
+      
+    }
+
+    public void ActivateRagdoll()
+    {
+        if (!isRagdoll)
+        {
+            isRagdoll = true;
+            rigidBody.freezeRotation = false;
+            rigidBody.centerOfMass = oldCenterOfMass;
+            ragdollCollider.enabled =true;
+            StartCoroutine(DeactivateRagDollTimer(3f));
+        }
+      
+    }
+
+    public IEnumerator DeactivateRagDollTimer(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        DeactivateRagdoll();
+    }
+
+    public void DeactivateRagdoll()
+    {
+        isRagdoll = false;
+        ragdollCollider.enabled = false;
+        rigidBody.centerOfMass = new Vector3(rigidBody.centerOfMass.x, rigidBody.centerOfMass.y + .5f, rigidBody.centerOfMass.z);
+        transform.rotation = startingRotation;
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.freezeRotation = true;
+        transform.position = lastSavedPosition;
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isRagdoll)
+        {
+            if (collision.collider.CompareTag("Bumper"))
+            {
+                if (_currentSpeed >= _maxSpeed / 2)
+                {
+                    rigidBody.AddForceAtPosition(transform.forward * -30f, collision.transform.position, ForceMode.Impulse);
+                    ActivateRagdoll();
+                }
+            }
+            else if (collision.collider.CompareTag("Car"))
+            {
+                rigidBody.AddForceAtPosition(transform.forward * -30f, collision.transform.position, ForceMode.Impulse);
+                ActivateRagdoll();
+            }
+        }
+     
+    }
+
+    public void SavePosition(Vector3 position)
+    {
+        lastSavedPosition = position;
     }
 }
