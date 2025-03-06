@@ -36,7 +36,7 @@ public class CameraSmoothFollow : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + _heightOffset, transform.position.z);
         transform.rotation = Quaternion.LookRotation(_target.position - transform.position);
     }
-    // Update is called once per frame
+
     void FixedUpdate()
     {
         if (!_playerController.isRagdoll)

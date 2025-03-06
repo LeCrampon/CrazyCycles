@@ -22,6 +22,7 @@ public class PoubellesPool : MonoBehaviour
         {
             tmp = Instantiate(objectToPool);
             tmp.SetActive(false);
+            tmp.transform.parent = transform;
             pooledPoubelles.Add(tmp);
         }
     }

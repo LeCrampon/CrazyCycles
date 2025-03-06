@@ -44,4 +44,5 @@ public class Objective : MonoBehaviour
         ObjectiveManager._instance._objectives.Add(this);
         gameObject.SetActive(false);
     }
+
 }

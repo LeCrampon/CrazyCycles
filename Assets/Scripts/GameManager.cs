@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public int score = 0;
     public bool gameStarted = false;
-    public GameObject character;
+    public BikeController _player;
 
     public bool paused = false;
 

@@ -14,7 +14,9 @@ public class PoubelleCollision : MonoBehaviour
 	public Transform spawnPoint;
 	public PoubelleSpawn poubelleSpawn;
 
-	private int poubelleScore = 20;
+	[Header("Audio")]
+	[SerializeField]
+	private AudioSource _collisionAudioSource;
 
 
 	private void OnTriggerEnter(Collider other)
@@ -26,6 +28,9 @@ public class PoubelleCollision : MonoBehaviour
 			mainRigidbody.isKinematic = false;
 			capRigidbody.isKinematic = false;
 			mainRigidbody.AddForce(other.transform.forward * 50f);
+
+			PoubelleManager.Instance.ActivatePoubellePopUp(transform.position);
+
 			GameObject go1 = InstantiateGarbage();
 			GameObject go2 = InstantiateGarbage();
 			GameObject go3 = InstantiateGarbage();
@@ -33,14 +38,25 @@ public class PoubelleCollision : MonoBehaviour
 			go2.GetComponent<Rigidbody>().AddForce(other.transform.forward * 50f);
 			go3.GetComponent<Rigidbody>().AddForce(other.transform.forward * 50f);
 
-			GameManager.Instance.AddScore(poubelleScore);
+			GameManager.Instance.AddScore(PoubelleManager.Instance._poubellePoints);
+
+			//AUDIO
+			_collisionAudioSource.pitch = Random.Range(.9f, 1.1f);
+			_collisionAudioSource.Play();
+
 			StartCoroutine(DeactivatePoubelle());
 		}
 	}
 
 	GameObject InstantiateGarbage()
 	{
-		return GameObject.Instantiate(garbagePrefab, spawnPoint.position, Quaternion.identity);
+		//return GameObject.Instantiate(garbagePrefab, spawnPoint.position, Quaternion.identity);
+		GameObject garbage = GarbagePooling._instance.GetGarbage();
+		garbage.transform.position = spawnPoint.position;
+		garbage.SetActive(true);
+
+		
+		return garbage;
 	}
 
 	public void ResetPoubelle()

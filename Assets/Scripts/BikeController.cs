@@ -180,18 +180,15 @@ public class BikeController : MonoBehaviour
             else if (_currentSpeed > 0.2 && _currentSpeed < _maxSpeed / 4 && !_bikeAudio.IsSlowRunningClipPlaying())
             {
                 _bikeAudio.PlaySlowRunningAudio();
-                Debug.Log("Playin'");
             }
             else if (_currentSpeed >= _maxSpeed / 4 && _currentSpeed < (_maxSpeed / 4) + .5f)
             {
                 if (!_bikeAudio.IsFastRunningClipPlaying() && _bikeAudio.IsSlowRunningClipPlaying())
                 {
-                    Debug.Log("//switch To Higher Gear");
                     _bikeAudio.SwitchToHigherGear();
                 }
                 else if (!_bikeAudio.IsSlowRunningClipPlaying() && _bikeAudio.IsFastRunningClipPlaying())
                 {
-                    Debug.Log("//switch To Lower Gear");
                     _bikeAudio.SwitchToLowerGear();
                 }
             }
@@ -337,7 +334,6 @@ public class BikeController : MonoBehaviour
             Debug.DrawRay(_groundRaycastTransformFront.position, -_groundRaycastTransformFront.up * hit.distance, Color.yellow);
             _grounded = true;
             hitNormal = hit.normal;
-            //transform.up -= (transform.up - hit.normal) * 0.1f;
             RaycastHit hitBack;
             if (!isRagdoll)
             {
@@ -364,7 +360,6 @@ public class BikeController : MonoBehaviour
         else if(!on && frictionParticles.isPlaying)
             frictionParticles.Stop();
 
-        //frictionParticles.emission.
     }
 
     void TurnBike()
@@ -377,9 +372,6 @@ public class BikeController : MonoBehaviour
             _currentTurnSpeed *= 1.5f;
         _vehicleModel.transform.Rotate(0, _turnValue * Time.deltaTime * _currentTurnSpeed, 0);
 
-        //float turnFinalValue = _turnValue * Time.deltaTime * _currentTurnSpeed;
-        //Debug.Log("Turn value" + turnFinalValue);
-        //velocity = rigidBody.velocity;
 
         if (_turnValue != 0)
         {
@@ -392,28 +384,6 @@ public class BikeController : MonoBehaviour
         {
             cameraTarget.transform.localPosition = Vector3.SmoothDamp(cameraTarget.localPosition, cameraTargetPosition, ref velocity, 40f * Time.deltaTime);
         }
-
-  //      if(_turnValue == 1)
-		//{
-  //          if(turnLeftParticles.isPlaying)
-  //              turnLeftParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-  //          if(!turnRightParticles.isPlaying)
-  //              turnRightParticles.Play();
-		//}
-  //      else if (_turnValue == -1)
-  //      {
-  //          if (!turnLeftParticles.isPlaying)
-  //              turnLeftParticles.Play();
-  //          if (turnRightParticles.isPlaying)
-  //              turnRightParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-  //      }
-		//else
-		//{
-  //          if (turnLeftParticles.isPlaying)
-  //              turnLeftParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-  //          if (turnRightParticles.isPlaying)
-  //              turnRightParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-  //      }
        
     }
 
@@ -471,6 +441,7 @@ public class BikeController : MonoBehaviour
             rigidBody.freezeRotation = false;
             rigidBody.centerOfMass = oldCenterOfMass;
             ragdollCollider.enabled =true;
+            _bikeAudio.PlayCrashAudio();
             StartCoroutine(DeactivateRagDollTimer(3f));
         }
       
@@ -500,15 +471,17 @@ public class BikeController : MonoBehaviour
         {
             if (collision.collider.CompareTag("Bumper"))
             {
-                if (_currentSpeed >= _maxSpeed / 2)
+                float hitAngle = Vector3.Angle(collision.contacts[0].normal, -_vehicleModel.transform.forward);
+                //Si on tape un mur vite avec un angle proche de l'angle droit
+                if ((_currentSpeed >= _maxSpeed / 2) && hitAngle < 45f)
                 {
-                    rigidBody.AddForceAtPosition(transform.forward * -30f, collision.transform.position, ForceMode.Impulse);
+                    rigidBody.AddForceAtPosition(transform.forward * -120f, collision.transform.position, ForceMode.Impulse);
                     ActivateRagdoll();
                 }
             }
             else if (collision.collider.CompareTag("Car"))
             {
-                rigidBody.AddForceAtPosition(transform.forward * -30f, collision.transform.position, ForceMode.Impulse);
+                rigidBody.AddForceAtPosition(transform.forward * -150f, collision.transform.position, ForceMode.Impulse);
                 ActivateRagdoll();
             }
         }

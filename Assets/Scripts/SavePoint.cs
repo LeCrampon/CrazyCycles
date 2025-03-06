@@ -6,13 +6,9 @@ public class SavePoint : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (!GameManager.Instance._player.isRagdoll && other.CompareTag("Player"))
         {
-            BikeController playerBike = other.transform.parent.parent.GetComponent<BikeController>();
-            if (playerBike.isRagdoll)
-            {
-                playerBike.SavePosition(transform.position);
-            }
+            GameManager.Instance._player.SavePosition(transform.position);
         }
     }
 }

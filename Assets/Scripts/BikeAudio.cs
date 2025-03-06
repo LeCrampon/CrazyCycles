@@ -24,6 +24,8 @@ public class BikeAudio : MonoBehaviour
     [SerializeField]
     private AudioSource _windAudioSource;
 
+
+    [Header("Audio Clips")]
     [SerializeField]
     private AudioClip _fastRunningClip;
     [SerializeField]
@@ -34,7 +36,13 @@ public class BikeAudio : MonoBehaviour
     private AudioClip _windClip;
 
 
-    private Coroutine crossFadeCoroutine;
+    private Coroutine _crossFadeCoroutine;
+
+    [Header("Crash Audio")]
+    [SerializeField]
+    private AudioSource _crashAudioSource;
+    [SerializeField]
+    private List<AudioClip> _crashAudioClips;
 
 
     public void PlayFastRunningAudio()
@@ -49,7 +57,6 @@ public class BikeAudio : MonoBehaviour
         _bikeLoopSlowAudioSource.clip = _slowRunningClip;
         _bikeLoopSlowAudioSource.loop = true;
         _bikeLoopSlowAudioSource.Play();
-        Debug.Log("SLOWPLAYIN'");
     }
 
     public void PlayBrakingClip()
@@ -60,7 +67,6 @@ public class BikeAudio : MonoBehaviour
             _bikeBrakingAudioSource.loop = false;
             _bikeBrakingAudioSource.pitch = Random.Range(0.9f,1.1f);
             _bikeBrakingAudioSource.Play();
-            Debug.Log("PLAYING BRAKE");
         }
 
     }
@@ -80,7 +86,6 @@ public class BikeAudio : MonoBehaviour
             _bikeLoopFastAudioSource.Stop();
         if(_bikeLoopSlowAudioSource.isPlaying)
             _bikeLoopSlowAudioSource.Stop();
-        Debug.Log("STOPPING EVERYTHING");
     }
 
     public void SetFastRunningAudioSpeed(float speed)
@@ -141,7 +146,6 @@ public class BikeAudio : MonoBehaviour
 
         if(!fadeIn.isPlaying)
             fadeIn.Play();
-        Debug.Log("STARTING");
 
         float ratio = 0;
 
@@ -166,22 +170,21 @@ public class BikeAudio : MonoBehaviour
 
         if(fadeOut.volume == 0)
             fadeOut.Stop();
-        Debug.Log("STOPPING");
 
-        crossFadeCoroutine = null;
+        _crossFadeCoroutine = null;
         yield break;
     }
 
     public void SwitchToHigherGear()
     {
-        if(crossFadeCoroutine == null)
-            crossFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopSlowAudioSource, _bikeLoopFastAudioSource, 1f));
+        if(_crossFadeCoroutine == null)
+            _crossFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopSlowAudioSource, _bikeLoopFastAudioSource, 1f));
     }  
     
     public void SwitchToLowerGear()
     {
-        if (crossFadeCoroutine == null)
-            crossFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopFastAudioSource, _bikeLoopSlowAudioSource, 1f));
+        if (_crossFadeCoroutine == null)
+            _crossFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopFastAudioSource, _bikeLoopSlowAudioSource, 1f));
     }
 
     public IEnumerator AudioFadeIn(AudioSource audioSource, float maxVolume, float time)
@@ -253,6 +256,13 @@ public class BikeAudio : MonoBehaviour
         {
             StartCoroutine(AudioFadeOut(_bikeBrakingLoopAudioSource, .5f));
         }
+    }
+
+    public void PlayCrashAudio()
+    {
+        _crashAudioSource.clip = _crashAudioClips[Random.Range(0, _crashAudioClips.Count)];
+        _crashAudioSource.pitch = Random.Range(.8f, 1.2f);
+        _crashAudioSource.Play();
     }
 
 }

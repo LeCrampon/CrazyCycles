@@ -54,6 +54,7 @@ public class MapGenerator : MonoBehaviour
 		{
             m.roadModule.transform.position = new Vector3(startingPoint.x - CELL_STEP * m.posX, startingPoint.y, startingPoint.z - CELL_STEP * m.posY);
             m.roadModule.transform.rotation = Quaternion.identity;
+            m.roadModule.transform.parent = transform;
         }
        
     }
@@ -104,29 +105,7 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    //private void PopulateMap()
-    //{
-    //    int cpt = 0;
-    //    int firstX = Random.Range(0, 0);
-    //    int firstY = Random.Range(0, 0);
-
-    //    while (!mapFilled)
-    //    {
-    //        if (cpt == 0)
-    //        {
-    //            PopulateModule(generatedMap[firstX, firstY]);
-    //            mapFilled = true;
-    //        }
-    //        CheckIfMapFilled();
-    //        if (mapFilled)
-    //        {
-    //            return;
-    //        }
-
-
-    //        cpt++;
-    //    }
-    //}
+   
 
     private void PopulateFirstCell()
     {
@@ -147,11 +126,5 @@ public class MapGenerator : MonoBehaviour
 
         mapFilled = true;
     }
-
-
-   
-
-
-
 
 }

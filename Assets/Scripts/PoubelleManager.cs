@@ -10,6 +10,10 @@ public class PoubelleManager : MonoBehaviour
     public bool started = false;
     public bool once = false;
 
+    public int _poubellePoints = 20;
+    [SerializeField]
+    private GameObject _poubellePopUp;
+
 	private void Awake()
 	{
         Instance = this;
@@ -66,5 +70,12 @@ public class PoubelleManager : MonoBehaviour
         spawn.used = true;
         poubelle.transform.rotation = Quaternion.identity;
         poubelle.SetActive(true);
+    }
+
+    public void ActivatePoubellePopUp(Vector3 position)
+    {
+        Vector3 spawnPosition = new Vector3(position.x, position.y + 1.5f, position.z);
+        _poubellePopUp.transform.position = spawnPosition;
+        _poubellePopUp.SetActive(true);
     }
 }
