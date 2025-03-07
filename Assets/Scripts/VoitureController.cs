@@ -49,6 +49,12 @@ public class VoitureController : MonoBehaviour
     public SimpleSpline splineHelper;
     public LayerMask layerMaskWaypoint;
 
+    [Header("Collision")]
+    [SerializeField]
+    private LayerMask _carCollisionLayerMask;
+    [SerializeField]
+    private Transform _rayCastPivot;
+
     private void Awake()
     {
         splineHelper = GetComponent<SimpleSpline>();
@@ -68,7 +74,7 @@ public class VoitureController : MonoBehaviour
     {
         if (GameManager.Instance.gameStarted)
         {
-            
+            CheckIfCarInFront();
 
             switch (currentState)
             {
@@ -90,6 +96,7 @@ public class VoitureController : MonoBehaviour
                     CheckIfCarInFront();
                     break;
                 case CarState.Stopped:
+                    Debug.Log("IN STOPPED");
                     CheckIfCarCanStartAgain();
                     break;
             }
@@ -281,13 +288,14 @@ public class VoitureController : MonoBehaviour
 	{
         //Vérifie si il y a une voiture devant
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+        if (Physics.Raycast(_rayCastPivot.position, _rayCastPivot.forward, out hit, 3f, _carCollisionLayerMask))
         {
+            Debug.Log("COLLIDING WITH : " + hit.collider.tag);
             if (hit.collider.CompareTag("Car") && Vector3.Dot(transform.forward, hit.collider.transform.forward) >= .3f)
             {
                 //Dans ce cas, on change de state
                 SwitchState(CarState.Stopped);
-                Debug.DrawLine(transform.position, hit.transform.position, Color.blue, 2f);
+                Debug.DrawLine(_rayCastPivot.position, hit.transform.position, Color.blue, 2f);
             }   
         }
     }
@@ -296,17 +304,21 @@ public class VoitureController : MonoBehaviour
 	{
         //Vérifie si il y a une voiture devant
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+        if (Physics.Raycast(_rayCastPivot.position, _rayCastPivot.forward, out hit, 8f, _carCollisionLayerMask))
         {
             if (!hit.collider.CompareTag("Car"))
             {
                 //Dans ce cas, on change de state
                 SwitchStateFromStop(previousState);
-                Debug.DrawLine(transform.position, hit.transform.position, Color.blue, 2f);
+                Debug.DrawLine(_rayCastPivot.position, hit.transform.position, Color.blue, 2f);
             }
-        }else
+
+            //Debug.Log("I HIT SOMETHING!  SHOULD STOP");
+        }
+        else
 		{
             SwitchStateFromStop(previousState);
+            //Debug.Log("THERE IS NO COLLIDER, LET'S GO");
         }
     }
 
@@ -316,7 +328,8 @@ public class VoitureController : MonoBehaviour
 	// Set a new current state, and save the previous state
 	void SwitchState(CarState newState)
     {
-        previousState = currentState;
+        if(newState != currentState)
+            previousState = currentState;
         currentState = newState;
     }
 

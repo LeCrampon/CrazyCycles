@@ -184,11 +184,17 @@ public class CarController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position,  transform.forward, out hit, 3f))
         {
-            if (hit.collider.CompareTag("Car") && Vector3.Dot(transform.forward,hit.collider.transform.forward) >= .3f)
+            Debug.DrawRay(transform.position, transform.forward);
+            if (hit.collider.CompareTag("Car")  )
             {
-                stop = true;
-                SwitchState(CarState.Stopped);
-                Debug.DrawLine(transform.position, hit.transform.position, Color.blue, 2f);
+                if(Vector3.Dot(transform.forward, hit.collider.transform.forward) >= .3f)
+                {
+                    stop = true;
+                    SwitchState(CarState.Stopped);
+                    Debug.DrawLine(transform.position, hit.transform.position, Color.blue, 2f);
+                }
+
+                Debug.Log("CAR IN FRONT, SHOULD BE STOPPING");
             }
 			else
 			{

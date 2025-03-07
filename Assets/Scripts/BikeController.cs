@@ -19,7 +19,7 @@ public class BikeController : MonoBehaviour
     [SerializeField]
     private float _currentSpeed = 0f;
 
-    public GameObject animeLines;
+
 
     public float CurrentSpeed   // property
     {
@@ -51,10 +51,6 @@ public class BikeController : MonoBehaviour
 
     public bool accelerating;
 
-    public Vector2 cameraLook;
-    public float cameraRotationSpeed;
-    public Transform cameraTransform;
-
     [SerializeField]
     private bool _moving = false;
     [SerializeField]
@@ -80,6 +76,7 @@ public class BikeController : MonoBehaviour
 
     public Vector3 hitNormal;
 
+    [Header("Camera")]
     //The target the camera is following
     public Transform cameraTarget;
     public Vector3 cameraTargetPosition;
@@ -95,13 +92,12 @@ public class BikeController : MonoBehaviour
     [SerializeField]
     private float _jumpValue;
 
-
+    [Header("Animation")]
     [SerializeField]
     private BikeAnimation _bikeAnimation;
-
+    public GameObject animeLines;
     public ParticleSystem turnLeftParticles;
     public ParticleSystem turnRightParticles;
-
     public ParticleSystem frictionParticles;
 
     [SerializeField]
@@ -110,14 +106,15 @@ public class BikeController : MonoBehaviour
     [SerializeField]
     private BikeAudio _bikeAudio;
 
-    [Header("RagDoll Management")]
+    [Header("Ragdoll")]
+    [SerializeField]
+    public bool isRagdoll = false;
     private Quaternion startingRotation;
     private Vector3 lastSavedPosition;
     [SerializeField]
     private Collider ragdollCollider;
     private Vector3 oldCenterOfMass;
-    [SerializeField]
-    public bool isRagdoll = false;
+
 
     private void Awake()
     {
@@ -299,8 +296,8 @@ public class BikeController : MonoBehaviour
         }
        
 
-        Debug.DrawRay(new Vector3(_vehicleModel.transform.position.x, _vehicleModel.transform.position.y + .5f, _vehicleModel.transform.position.z), -_vehicleModel.transform.forward, Color.red);
-        Debug.DrawRay(_vehicleModel.transform.position, _vehicleModel.transform.forward, Color.blue);
+        //Debug.DrawRay(new Vector3(_vehicleModel.transform.position.x, _vehicleModel.transform.position.y + .5f, _vehicleModel.transform.position.z), -_vehicleModel.transform.forward, Color.red);
+        //Debug.DrawRay(_vehicleModel.transform.position, _vehicleModel.transform.forward, Color.blue);
 
         _mainCamera.fieldOfView = Mathf.Lerp(60, 75, _currentSpeed/_maxSpeed);
     }
@@ -331,7 +328,7 @@ public class BikeController : MonoBehaviour
         // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(_groundRaycastTransformFront.position, -_groundRaycastTransformFront.up, out hit, 1f, groundMask))
         {
-            Debug.DrawRay(_groundRaycastTransformFront.position, -_groundRaycastTransformFront.up * hit.distance, Color.yellow);
+            //Debug.DrawRay(_groundRaycastTransformFront.position, -_groundRaycastTransformFront.up * hit.distance, Color.yellow);
             _grounded = true;
             hitNormal = hit.normal;
             RaycastHit hitBack;
@@ -340,14 +337,14 @@ public class BikeController : MonoBehaviour
                 if (Physics.Raycast(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up, out hitBack, 1f, groundMask))
                 {
                     transform.up -= (transform.up - (hit.normal + hitBack.normal)) * 0.1f;
-                    Debug.DrawRay(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up * hit.distance, Color.yellow);
+                    //Debug.DrawRay(_groundRaycastTransformBack.position, -_groundRaycastTransformBack.up * hit.distance, Color.yellow);
                 }
             }
            
         }
         else
         {
-            Debug.DrawRay(_groundRaycastTransformFront.position, -_groundRaycastTransformFront.up * hit.distance, Color.red);
+            //Debug.DrawRay(_groundRaycastTransformFront.position, -_groundRaycastTransformFront.up * hit.distance, Color.red);
             _grounded = false;
         }
     }
@@ -387,17 +384,12 @@ public class BikeController : MonoBehaviour
        
     }
 
-    void TurnCamera()
-    {
-        cameraTransform.Rotate(0, cameraLook.x * Time.deltaTime * cameraRotationSpeed, 0);
-    }
 
-   
 
+    #region Input Functions
     private void OnAccelerate()
     {
         accelerating = true;
-        //_bikeAudio.PlayFastRunningAudio();
     }
 
     private void OnAccelerateStop()
@@ -432,7 +424,9 @@ public class BikeController : MonoBehaviour
         }
       
     }
+    #endregion
 
+    #region Ragdoll Functions
     public void ActivateRagdoll()
     {
         if (!isRagdoll)
@@ -465,6 +459,12 @@ public class BikeController : MonoBehaviour
 
     }
 
+    public void SavePosition(Vector3 position)
+    {
+        lastSavedPosition = position;
+    }
+    #endregion
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!isRagdoll)
@@ -488,8 +488,5 @@ public class BikeController : MonoBehaviour
      
     }
 
-    public void SavePosition(Vector3 position)
-    {
-        lastSavedPosition = position;
-    }
+
 }
