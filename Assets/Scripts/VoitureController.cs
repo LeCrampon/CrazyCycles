@@ -72,7 +72,7 @@ public class VoitureController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (GameManager.Instance.gameStarted)
+        if (GameManager._instance.gameStarted || GameManager._instance.inMenu)
         {
             CheckIfCarInFront();
 
@@ -96,7 +96,6 @@ public class VoitureController : MonoBehaviour
                     CheckIfCarInFront();
                     break;
                 case CarState.Stopped:
-                    Debug.Log("IN STOPPED");
                     CheckIfCarCanStartAgain();
                     break;
             }
@@ -290,7 +289,7 @@ public class VoitureController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(_rayCastPivot.position, _rayCastPivot.forward, out hit, 3f, _carCollisionLayerMask))
         {
-            Debug.Log("COLLIDING WITH : " + hit.collider.tag);
+            //Debug.Log("COLLIDING WITH : " + hit.collider.tag);
             if (hit.collider.CompareTag("Car") && Vector3.Dot(transform.forward, hit.collider.transform.forward) >= .3f)
             {
                 //Dans ce cas, on change de state

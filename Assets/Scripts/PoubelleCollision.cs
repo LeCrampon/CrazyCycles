@@ -38,7 +38,7 @@ public class PoubelleCollision : MonoBehaviour
 			go2.GetComponent<Rigidbody>().AddForce(other.transform.forward * 50f);
 			go3.GetComponent<Rigidbody>().AddForce(other.transform.forward * 50f);
 
-			GameManager.Instance.AddScore(PoubelleManager.Instance._poubellePoints);
+			GameManager._instance.AddScore(PoubelleManager.Instance._poubellePoints);
 
 			//AUDIO
 			_collisionAudioSource.pitch = Random.Range(.9f, 1.1f);

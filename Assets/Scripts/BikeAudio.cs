@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BikeAudio : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSpeedState _currentSpeedState = AudioSpeedState.STOPPED;
+    private AudioSpeedState _previousSpeedState = AudioSpeedState.STOPPED;
+
     [Header("Bike grounded audio")]
     [SerializeField]
     private AudioSource _bikeGroundedAudioSource;
@@ -36,7 +40,8 @@ public class BikeAudio : MonoBehaviour
     private AudioClip _windClip;
 
 
-    private Coroutine _crossFadeCoroutine;
+    private Coroutine _lowerGearFadeCoroutine;
+    private Coroutine _higherGearFadeCoroutine;
 
     [Header("Crash Audio")]
     [SerializeField]
@@ -45,18 +50,67 @@ public class BikeAudio : MonoBehaviour
     private List<AudioClip> _crashAudioClips;
 
 
-    public void PlayFastRunningAudio()
+    public void SwitchState(AudioSpeedState state)
     {
-        _bikeLoopFastAudioSource.clip = _fastRunningClip;
-        _bikeLoopFastAudioSource.loop = true;
-        _bikeLoopFastAudioSource.Play();
+        _previousSpeedState = _currentSpeedState;
+        _currentSpeedState = state;
+        ManageStates();
+    }
+
+    public void ManageStates()
+    {
+        switch (_currentSpeedState)
+        {
+            case AudioSpeedState.STOPPED:
+                StopAllClips();
+                break;
+            case AudioSpeedState.SLOW:
+                if(_previousSpeedState == AudioSpeedState.FAST)
+                {
+                    SwitchToLowerGear();
+                }
+                else
+                {
+                    StartSlowRunningAudio();
+                }
+                break;
+            case AudioSpeedState.FAST:
+                if (_previousSpeedState == AudioSpeedState.SLOW)
+                {
+                    SwitchToHigherGear();
+                }
+                else
+                {
+                    StartFastRunningAudio();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void StartFastRunningAudio()
+    {
+        if (!_bikeLoopFastAudioSource.isPlaying)
+        {
+            _bikeLoopFastAudioSource.clip = _fastRunningClip;
+            _bikeLoopFastAudioSource.loop = true;
+            _bikeLoopFastAudioSource.volume = 1;
+            _bikeLoopFastAudioSource.Play();
+        }
+      
     } 
     
-    public void PlaySlowRunningAudio()
+    public void StartSlowRunningAudio()
     {
-        _bikeLoopSlowAudioSource.clip = _slowRunningClip;
-        _bikeLoopSlowAudioSource.loop = true;
-        _bikeLoopSlowAudioSource.Play();
+        if (!_bikeLoopSlowAudioSource.isPlaying)
+        {
+            _bikeLoopSlowAudioSource.clip = _slowRunningClip;
+            _bikeLoopSlowAudioSource.loop = true;
+            _bikeLoopSlowAudioSource.volume = 1;
+            _bikeLoopSlowAudioSource.Play();
+        }
+
     }
 
     public void PlayBrakingClip()
@@ -171,21 +225,33 @@ public class BikeAudio : MonoBehaviour
         if(fadeOut.volume == 0)
             fadeOut.Stop();
 
-        _crossFadeCoroutine = null;
+        Debug.Log("========= Ending fade! =============");
+        //_crossFadeCoroutine = null;
         yield break;
     }
 
     public void SwitchToHigherGear()
     {
-        if(_crossFadeCoroutine == null)
-            _crossFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopSlowAudioSource, _bikeLoopFastAudioSource, 1f));
+        if(/*IsSlowRunningClipPlaying() && !IsFastRunningClipPlaying() &&*/ _higherGearFadeCoroutine == null)
+        {
+            ResetSlowRunningAudio();
+            _higherGearFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopSlowAudioSource, _bikeLoopFastAudioSource, 1f));
+            Debug.Log("Switching to Higher Gear!");
+        }
+            
     }  
     
     public void SwitchToLowerGear()
     {
-        if (_crossFadeCoroutine == null)
-            _crossFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopFastAudioSource, _bikeLoopSlowAudioSource, 1f));
+        if (!IsSlowRunningClipPlaying() && IsFastRunningClipPlaying() && _lowerGearFadeCoroutine == null)
+        {
+            ResetFastRunningAudio();
+            _lowerGearFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopFastAudioSource, _bikeLoopSlowAudioSource, 1f));
+            Debug.Log("Switching To Lower Gear!");
+        }
+
     }
+
 
     public IEnumerator AudioFadeIn(AudioSource audioSource, float maxVolume, float time)
     {
@@ -265,4 +331,36 @@ public class BikeAudio : MonoBehaviour
         _crashAudioSource.Play();
     }
 
+    public void ResetSlowRunningAudio()
+    {
+        if (_lowerGearFadeCoroutine != null)
+        {
+            StopCoroutine(_lowerGearFadeCoroutine);
+            _lowerGearFadeCoroutine = null;
+            _bikeLoopSlowAudioSource.pitch = 1;
+            _bikeLoopSlowAudioSource.volume = 0;
+            Debug.Log("========= Stopping Fade! =============");
+        }
+    }
+
+    public void ResetFastRunningAudio()
+    {
+        if (_higherGearFadeCoroutine != null)
+        {
+            StopCoroutine(_higherGearFadeCoroutine);
+            _higherGearFadeCoroutine = null;
+            _bikeLoopFastAudioSource.pitch = 1;
+            _bikeLoopFastAudioSource.volume = 0;
+            Debug.Log("========= Stopping fade! =============");
+        }
+
+    }
+
+}
+
+public enum AudioSpeedState
+{
+    STOPPED,
+    SLOW,
+    FAST
 }

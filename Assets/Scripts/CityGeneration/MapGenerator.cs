@@ -42,6 +42,8 @@ public class MapGenerator : MonoBehaviour
         //}
     }
 
+
+
     public void PopulateModule(MapCell m)
     {
         List<RoadModule> possibleModules = m.CheckNeighbours();
@@ -96,12 +98,14 @@ public class MapGenerator : MonoBehaviour
         }
         //navMesh.BuildNavMesh();
         PoubelleManager.Instance.InstantiateAllPoubelles();
+        ObjectiveManager._instance.ChooseNextObjective();
+        yield return new WaitForSeconds(1f);
         loadingScreen.SetActive(false);
         bicycleCharacter.GetComponent<Rigidbody>().isKinematic = false;
-        GameManager.Instance.gameStarted = true;
+        GameManager._instance.gameStarted = true;
         StartCoroutine(RedLightManager.Instance.SwitchRedLights());
-        yield return new WaitForSeconds(1f);
-        ObjectiveManager._instance.ChooseNextObjective();
+
+
 
     }
 

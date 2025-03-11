@@ -6,9 +6,9 @@ public class SavePoint : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (!GameManager.Instance._player.isRagdoll && other.CompareTag("Player"))
+        if (!GameManager._instance._player.isRagdoll && other.CompareTag("Player"))
         {
-            GameManager.Instance._player.SavePosition(transform.position);
+            GameManager._instance._player.SavePosition(transform.position);
         }
     }
 }

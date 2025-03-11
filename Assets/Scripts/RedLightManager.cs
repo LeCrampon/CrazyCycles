@@ -25,7 +25,7 @@ public class RedLightManager : MonoBehaviour
 
     public IEnumerator SwitchRedLights()
 	{
-		while (GameManager.Instance.gameStarted)
+		while (GameManager._instance.gameStarted)
 		{
             yield return new WaitForSeconds(15f);
 

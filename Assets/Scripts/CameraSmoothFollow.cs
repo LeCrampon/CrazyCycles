@@ -28,8 +28,19 @@ public class CameraSmoothFollow : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
 
-    private float zoomBackOffset = 0;
+    [SerializeField]
+    public RenderTexture retroTexture;
 
+    [SerializeField]
+    public Canvas renderUI;
+
+    [SerializeField]
+    public Canvas mainUI;
+
+    private void Awake()
+    {
+        SetRenderTexture();
+    }
     private void Start()
     {
         transform.position = _target.position - _target.forward * _distanceOffset;
@@ -58,5 +69,21 @@ public class CameraSmoothFollow : MonoBehaviour
     {
 
        transform.position -= transform.forward/8;
+    }
+
+    private void SetRenderTexture()
+    {
+        if (GameManager._instance.retroStyle)
+        {
+            Camera.main.targetTexture = retroTexture;
+            renderUI.gameObject.SetActive(true);
+            mainUI.scaleFactor = 1;
+        }
+        else
+        {
+            Camera.main.targetTexture = null;
+            renderUI.gameObject.SetActive(false);
+            mainUI.scaleFactor = 4;
+        }
     }
 }

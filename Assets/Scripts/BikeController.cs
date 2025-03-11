@@ -147,49 +147,90 @@ public class BikeController : MonoBehaviour
     }
 
 
+    //private void ManageBikeAudio()
+    //{
+    //    ////GESTION DE L'AUDIO
+    //    if (_grounded )
+    //    {
+    //        if (_currentSpeed > 0.2)
+    //        {
+    //            _bikeAudio.StartGroundedAudio();
+    //        }
+    //        else
+    //        {
+    //            _bikeAudio.StopGroundedAudio();
+    //        }
+
+    //        if (_bikeAudio.IsFastRunningClipPlaying())
+    //        {
+    //            _bikeAudio.SetFastRunningAudioSpeed(_currentSpeed);
+    //        }
+    //        if (_bikeAudio.IsSlowRunningClipPlaying())
+    //        {
+    //            _bikeAudio.SetSlowRunningAudioSpeed(_currentSpeed);
+    //        }
+
+    //        if (_currentSpeed <= .2)
+    //        {
+    //            _bikeAudio.StopAllClips();
+    //        }
+    //        else if (_currentSpeed > 0.2 && _currentSpeed < _maxSpeed / 4 && !_bikeAudio.IsSlowRunningClipPlaying())
+    //        {
+    //            _bikeAudio.PlaySlowRunningAudio();
+    //        }
+    //        else if (_currentSpeed >= _maxSpeed / 4 && _currentSpeed < (_maxSpeed / 4) + .5f)
+    //        {
+    //            if (!_bikeAudio.IsFastRunningClipPlaying() && _bikeAudio.IsSlowRunningClipPlaying())
+    //            {
+    //                _bikeAudio.SwitchToHigherGear();
+    //            }
+    //            else if (!_bikeAudio.IsSlowRunningClipPlaying() && _bikeAudio.IsFastRunningClipPlaying())
+    //            {
+    //                _bikeAudio.SwitchToLowerGear();
+    //            }
+    //        }
+
+    //        if (_braking)
+    //        {
+    //            _bikeAudio.StartBrakingLoopAudio();
+    //        }
+    //        else
+    //        {
+    //            _bikeAudio.StopBrakingLoopAudio();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        _bikeAudio.StopGroundedAudio();
+    //    }
+
+    //    if(_currentSpeed >= _maxSpeed / 3)
+    //    {
+    //        _bikeAudio.StartWindAudio();
+    //    }
+    //    else
+    //    {
+    //        _bikeAudio.StopWindAudio();
+    //    }
+      
+    //}
+
     private void ManageBikeAudio()
     {
-        ////GESTION DE L'AUDIO
-        if (_grounded )
+        if (_grounded)
         {
-            if (_currentSpeed > 0.2)
+            //GROUNDED AUDIO
+            if(_currentSpeed >= .2f)
             {
                 _bikeAudio.StartGroundedAudio();
             }
             else
             {
                 _bikeAudio.StopGroundedAudio();
+                _bikeAudio.SwitchState(AudioSpeedState.STOPPED);
             }
 
-            if (_bikeAudio.IsFastRunningClipPlaying())
-            {
-                _bikeAudio.SetFastRunningAudioSpeed(_currentSpeed);
-            }
-            if (_bikeAudio.IsSlowRunningClipPlaying())
-            {
-                _bikeAudio.SetSlowRunningAudioSpeed(_currentSpeed);
-            }
-
-            if (_currentSpeed <= .2)
-            {
-                _bikeAudio.StopAllClips();
-            }
-            else if (_currentSpeed > 0.2 && _currentSpeed < _maxSpeed / 4 && !_bikeAudio.IsSlowRunningClipPlaying())
-            {
-                _bikeAudio.PlaySlowRunningAudio();
-            }
-            else if (_currentSpeed >= _maxSpeed / 4 && _currentSpeed < (_maxSpeed / 4) + .5f)
-            {
-                if (!_bikeAudio.IsFastRunningClipPlaying() && _bikeAudio.IsSlowRunningClipPlaying())
-                {
-                    _bikeAudio.SwitchToHigherGear();
-                }
-                else if (!_bikeAudio.IsSlowRunningClipPlaying() && _bikeAudio.IsFastRunningClipPlaying())
-                {
-                    _bikeAudio.SwitchToLowerGear();
-                }
-            }
-
+            //BRAKING AUDIO
             if (_braking)
             {
                 _bikeAudio.StartBrakingLoopAudio();
@@ -198,13 +239,17 @@ public class BikeController : MonoBehaviour
             {
                 _bikeAudio.StopBrakingLoopAudio();
             }
+
+
+
         }
         else
         {
             _bikeAudio.StopGroundedAudio();
         }
 
-        if(_currentSpeed >= _maxSpeed / 3)
+        //WIND AUDIO
+        if(_currentSpeed >= _maxSpeed / 4)
         {
             _bikeAudio.StartWindAudio();
         }
@@ -212,7 +257,25 @@ public class BikeController : MonoBehaviour
         {
             _bikeAudio.StopWindAudio();
         }
-      
+
+        //SPEED AUDIO
+        if (_currentSpeed >= .2f && _currentSpeed < _maxSpeed / 3)
+        {
+            _bikeAudio.SwitchState(AudioSpeedState.SLOW);
+        }
+        else if (_currentSpeed >= _maxSpeed / 2)
+        {
+            _bikeAudio.SwitchState(AudioSpeedState.FAST);
+        }
+
+        if (_bikeAudio.IsFastRunningClipPlaying())
+        {
+            _bikeAudio.SetFastRunningAudioSpeed(_currentSpeed);
+        }
+        if (_bikeAudio.IsSlowRunningClipPlaying())
+        {
+            _bikeAudio.SetSlowRunningAudioSpeed(_currentSpeed);
+        }
     }
 
     private void FixedUpdate()
@@ -410,7 +473,7 @@ public class BikeController : MonoBehaviour
 
     private void OnPause()
     {
-        GameManager.Instance.OnPause();
+        GameManager._instance.OnPause();
     }
 
     private void OnJump()

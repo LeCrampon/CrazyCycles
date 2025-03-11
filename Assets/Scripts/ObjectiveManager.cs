@@ -42,7 +42,7 @@ public class ObjectiveManager : MonoBehaviour
         ActivatePopUp(_currentObjective.transform.position);
 
         _currentObjective.gameObject.SetActive(false);
-        GameManager.Instance.AddScore(_objectivePoints);
+        GameManager._instance.AddScore(_objectivePoints);
         _currentObjective = null;
     }
 

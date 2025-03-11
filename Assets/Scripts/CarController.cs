@@ -67,7 +67,7 @@ public class CarController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-		if (GameManager.Instance.gameStarted)
+		if (GameManager._instance.gameStarted)
 		{
             CheckIfCarInFront();
 

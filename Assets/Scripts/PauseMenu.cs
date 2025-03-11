@@ -12,6 +12,6 @@ public class PauseMenu : MonoBehaviour
     
     public void EndPause()
     {
-        GameManager.Instance.OnPause();
+        GameManager._instance.OnPause();
     }
 }

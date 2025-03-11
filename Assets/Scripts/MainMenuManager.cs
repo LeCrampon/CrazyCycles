@@ -18,6 +18,7 @@ public class MainMenuManager : MonoBehaviour
 
 	public void StartGame()
 	{
+		GameManager._instance.inMenu = false;
 		SceneManager.LoadScene("CityGeneration");
 	}
 
@@ -37,5 +38,10 @@ public class MainMenuManager : MonoBehaviour
 		_mainMenu.SetActive(false);
 		_controlsMenu.SetActive(true);
 	}
+
+	public void SetRetroStyle(bool newRetroStyle)
+    {
+		GameManager._instance.retroStyle = newRetroStyle;
+    }
 
 }
