@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5099688901417924291}
   - component: {fileID: 6998958037114585609}
   - component: {fileID: -1390106345174555967}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Hausmann2
   m_TagString: Bumper
   m_Icon: {fileID: 0}

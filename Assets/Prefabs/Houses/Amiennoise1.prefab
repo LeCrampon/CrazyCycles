@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4690702992074568133}
   - component: {fileID: 7420892929438745871}
   - component: {fileID: -482490193063195383}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Amiennoise1
   m_TagString: Bumper
   m_Icon: {fileID: 0}

@@ -10,12 +10,6 @@ public class MainMenuManager : MonoBehaviour
 	[SerializeField]
 	private GameObject _controlsMenu;
 
-
-	private void Awake()
-	{
-		
-	}
-
 	public void StartGame()
 	{
 		GameManager._instance.inMenu = false;

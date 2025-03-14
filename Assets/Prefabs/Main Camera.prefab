@@ -2197,7 +2197,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1535
+    m_Bits: 58879
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 4286276db9715654b9e31f5e0a1f2991, type: 2}
   m_TargetDisplay: 0
@@ -2270,6 +2270,9 @@ MonoBehaviour:
   _playerController: {fileID: 0}
   _heightOffsetRagdoll: 0
   _distanceOffsetRagdoll: 0
+  retroTexture: {fileID: 8400000, guid: 4286276db9715654b9e31f5e0a1f2991, type: 2}
+  renderUI: {fileID: 417517886}
+  mainUI: {fileID: 1860646250}
 --- !u!1 &6056901779801592545
 GameObject:
   m_ObjectHideFlags: 0
@@ -2381,6 +2384,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1294651395771681997, guid: c2ce189dbfb7c894b861eb97ef8ed3b6,
         type: 3}
+      propertyPath: m_fontSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1294651395771681997, guid: c2ce189dbfb7c894b861eb97ef8ed3b6,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1294651395771681997, guid: c2ce189dbfb7c894b861eb97ef8ed3b6,
+        type: 3}
       propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -2393,6 +2406,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1294651395771681997, guid: c2ce189dbfb7c894b861eb97ef8ed3b6,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1294651395771681997, guid: c2ce189dbfb7c894b861eb97ef8ed3b6,
         type: 3}

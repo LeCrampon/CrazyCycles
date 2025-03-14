@@ -11,11 +11,9 @@ public class PoubellePopUp : MonoBehaviour
     [SerializeField]
     private TextMeshPro text;
 
-    // Start is called before the first frame update
     void Start()
     {
         text.text = "+" + PoubelleManager.Instance._poubellePoints;
-
     }
 
     private IEnumerator DeactivatePopUp()

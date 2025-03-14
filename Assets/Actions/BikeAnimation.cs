@@ -49,23 +49,12 @@ public class BikeAnimation : MonoBehaviour
     {
        
 
-        if (rate != 0 && _timer <= _turnDuration) {
-
+        if (rate != 0 && _timer <= _turnDuration) 
+        {
             Quaternion frontTurn = Quaternion.Slerp(_frontBone.localRotation, _startFrontLocalRotation * Quaternion.Euler(Vector3.up * rate * 45), _timer / _turnDuration);
             _frontBone.localRotation = frontTurn;
             _spineBone.localRotation = Quaternion.Slerp(_spineBone.localRotation, _startSpineLocalRotation * Quaternion.Euler(Vector3.down * rate * 15), _timer / _turnDuration);
             _timer += Time.deltaTime;
-      
-
-
-
-			//if (frontTurn.eulerAngles >)
-			//{
-			//	if (bikeController.turnLeftParticles.isPlaying)
-			//		bikeController.turnLeftParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-			//	if (!bikeController.turnRightParticles.isPlaying)
-			//		bikeController.turnRightParticles.Play();
-			//}
 		}
         else if (rate ==0)
         {

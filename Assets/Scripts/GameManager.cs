@@ -12,9 +12,8 @@ public class GameManager : MonoBehaviour
 
     public bool paused = false;
 
-    public bool retroStyle = true;
+    public bool retroStyle = false;
 
-    [SerializeField]
     public PauseMenu pauseMenu;
 
 
@@ -38,7 +37,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
 
     public void AddScore(int newScore) 
     {
@@ -70,7 +68,4 @@ public class GameManager : MonoBehaviour
             pauseMenu = ValuesHolder._instance._pauseMenu;
         }
     }
-
-
-
 }

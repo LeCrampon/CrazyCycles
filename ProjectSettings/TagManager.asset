@@ -8,6 +8,7 @@ TagManager:
   - Car
   - Bumper
   - SavePoint
+  - Boid
   layers:
   - Default
   - TransparentFX
@@ -23,8 +24,8 @@ TagManager:
   - SavePoint
   - 3DUILayer
   - Car
-  - 
-  - 
+  - Obstacles
+  - Boid
   - 
   - 
   - 
