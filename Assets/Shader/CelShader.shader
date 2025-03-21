@@ -85,6 +85,7 @@ Shader "My Custom Shaders/CelShader"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _SHADOWS_SOFT
 
+
             // These #pragma directives define the function names
             // for our Vertex and Fragment stage functions
             #pragma vertex Vertex

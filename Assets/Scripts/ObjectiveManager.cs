@@ -10,6 +10,9 @@ public class ObjectiveManager : MonoBehaviour
     public int _objectivePoints = 250;
 
     [SerializeField]
+    private GameObject _boidPrefab;
+
+    [SerializeField]
     private GameObject _objectivesPopUp;
 
 
@@ -32,15 +35,27 @@ public class ObjectiveManager : MonoBehaviour
     {
         if(_objectives.Count != 0 && _currentObjective == null)
         {
-            _currentObjective = _objectives[Random.Range(0, _objectives.Count)];
+            Objective tempObjective = _objectives[Random.Range(0, _objectives.Count)]; ;
+            float distance = Vector3.Distance(GameManager._instance._player.transform.position, tempObjective.transform.position);
+            while (distance < 80f || distance > 180f)
+            {
+                tempObjective = _objectives[Random.Range(0, _objectives.Count)]; 
+                distance = Vector3.Distance(GameManager._instance._player.transform.position, tempObjective.transform.position);
+            }
+            _currentObjective = tempObjective;
             _currentObjective.gameObject.SetActive(true);
         }
+    }
+
+    public Objective SelectRandomObjective()
+    {
+        return _objectives[Random.Range(0, _objectives.Count)];
     }
 
     public void ValidateCurrentObjective()
     {
         ActivatePopUp(_currentObjective.transform.position);
-
+        InstantiateBoidBicycle();
         _currentObjective.gameObject.SetActive(false);
         GameManager._instance.AddScore(_objectivePoints);
         _currentObjective = null;
@@ -53,6 +68,10 @@ public class ObjectiveManager : MonoBehaviour
         _objectivesPopUp.SetActive(true);
     }
     
+    public void InstantiateBoidBicycle()
+    {
+        Instantiate(_boidPrefab, new Vector3(_currentObjective.transform.position.x, 0, _currentObjective.transform.position.z), Quaternion.identity, BoidManager._instance.transform);
+    }
 
    
 }

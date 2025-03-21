@@ -225,7 +225,7 @@ public class BikeAudio : MonoBehaviour
         if(fadeOut.volume == 0)
             fadeOut.Stop();
 
-        Debug.Log("========= Ending fade! =============");
+        //Debug.Log("========= Ending fade! =============");
         //_crossFadeCoroutine = null;
         yield break;
     }
@@ -236,7 +236,7 @@ public class BikeAudio : MonoBehaviour
         {
             ResetSlowRunningAudio();
             _higherGearFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopSlowAudioSource, _bikeLoopFastAudioSource, 1f));
-            Debug.Log("Switching to Higher Gear!");
+            //Debug.Log("Switching to Higher Gear!");
         }
             
     }  
@@ -247,7 +247,7 @@ public class BikeAudio : MonoBehaviour
         {
             ResetFastRunningAudio();
             _lowerGearFadeCoroutine = StartCoroutine(RunningBikeCrossFade(_bikeLoopFastAudioSource, _bikeLoopSlowAudioSource, 1f));
-            Debug.Log("Switching To Lower Gear!");
+            //Debug.Log("Switching To Lower Gear!");
         }
 
     }

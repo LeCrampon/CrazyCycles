@@ -172,6 +172,18 @@ Varyings Vertex(Attributes IN)
     
     return OUT;
 }
+
+//
+//UNITY_INSTANCING_BUFFER_START(Props)
+//    UNITY_DEFINE_INSTANCED_PROP(float3, _Color)
+//    UNITY_DEFINE_INSTANCED_PROP(float4, _ColorMap_ST)
+//    UNITY_DEFINE_INSTANCED_PROP(float3, _RimColor)
+//    UNITY_DEFINE_INSTANCED_PROP(float3, _WorldColor)
+//    UNITY_DEFINE_INSTANCED_PROP(float, _Smoothness)
+//    UNITY_DEFINE_INSTANCED_PROP(float4, _RimSharpness)
+//UNITY_INSTANCING_BUFFER_END(Props)
+
+
 /*
 The FragmentDepthOnly function is responsible 
 for handling per-pixel shading during the 
@@ -214,8 +226,8 @@ float3 Fragment(Varyings IN) : SV_Target
     IN.normalWS = normalize(IN.normalWS);
     IN.viewDirectionWS = normalize(IN.viewDirectionWS);
 
-    //float dotProductOutline = (IN.normalWS, IN.viewDirectionWS);
-    //float3 outlineColor = float3(1.0, 1.0, 1.0) * dotProductOutline;
+   /* float dotProductOutline = (IN.normalWS, IN.viewDirectionWS);
+    float3 outlineColor = float3(1.0, 1.0, 1.0) * dotProductOutline;*/
 
     Light light;
     GetMainLightData(IN.positionWS, light);
@@ -246,9 +258,15 @@ float3 Fragment(Varyings IN) : SV_Target
         float addedNoL = dot(IN.normalWS, templight.direction);
         float addedtoonLighting = easysmoothstep(0, addedNoL);
         float addedtoonShadows = easysmoothstep(0.01, templight.shadowAttenuation);
-        float addedtoonAttenuation = easysmoothstep(0.5, templight.distanceAttenuation * 20);
+        float addedtoonAttenuation = easysmoothstep(0.5, templight.distanceAttenuation * 20 /** rsqrt(templight.distanceAttenuation.x)*/);
+        //TEST Specular
+        float addedSpecularTerm = pow(addedNoL, _Smoothness * _Smoothness) * addedtoonAttenuation;
+        addedSpecularTerm *= addedtoonLighting * addedtoonShadows;
+        addedSpecularTerm = easysmoothstep(0.01, addedSpecularTerm);
+
+
         // Same functions used to shade the main light.
-        additionalLights += addedtoonLighting *addedtoonShadows * templight.color * addedtoonAttenuation;
+        additionalLights += addedtoonLighting *addedtoonShadows * templight.color * addedtoonAttenuation * addedSpecularTerm;
     }
     
     float3 surfaceColor = _Color * SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, IN.uv);

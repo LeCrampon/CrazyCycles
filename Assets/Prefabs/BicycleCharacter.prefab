@@ -5228,7 +5228,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450651725634176}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &542241327
 GameObject:
@@ -5261,7 +5261,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450651725634176}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &542241330
 Rigidbody:
@@ -5354,7 +5354,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450651725634176}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &919936793
 GameObject:
@@ -10325,7 +10325,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450651725634176}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1076331017
 GameObject:
@@ -10378,6 +10378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7ccc42ebf6d064ba1b209bff83c96e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentSpeedState: 0
   _bikeGroundedAudioSource: {fileID: 1263038920}
   _bikeLoopFastAudioSource: {fileID: 138086007}
   _bikeLoopSlowAudioSource: {fileID: 23258026}
@@ -15901,7 +15902,6 @@ MonoBehaviour:
   _acceleration: 16
   _maxSpeed: 25
   _currentSpeed: 0
-  animeLines: {fileID: 0}
   _currentAcceleration: 0
   _maxTurnSpeed: 100
   _minTurnSpeed: 30
@@ -15911,9 +15911,6 @@ MonoBehaviour:
   _brakingStep: 3
   _currentBraking: 0
   accelerating: 0
-  cameraLook: {x: 0, y: 0}
-  cameraRotationSpeed: 5
-  cameraTransform: {fileID: 655312407}
   _moving: 0
   _braking: 0
   _grounded: 0
@@ -15925,13 +15922,15 @@ MonoBehaviour:
   _vehicleModel: {fileID: 919132147808190522}
   _jumpValue: 1000
   _bikeAnimation: {fileID: 216093587}
+  animeLines: {fileID: 0}
   turnLeftParticles: {fileID: 1030422415}
   turnRightParticles: {fileID: 294486191}
   frictionParticles: {fileID: 1279243447}
   _mainCamera: {fileID: 0}
   _bikeAudio: {fileID: 1076331020}
-  ragdollCollider: {fileID: 216093586}
   isRagdoll: 0
+  ragdollCollider: {fileID: 216093586}
+  _followTarget: {fileID: 1964113242591599277}
 --- !u!54 &1925330877
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15948,6 +15947,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!1 &5108015963630316326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1964113242591599277}
+  m_Layer: 8
+  m_Name: FollowTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1964113242591599277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5108015963630316326}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.9238168, z: 6.64}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 543450651725634176}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2008218987
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -115,6 +115,9 @@ public class BikeController : MonoBehaviour
     private Collider ragdollCollider;
     private Vector3 oldCenterOfMass;
 
+    [Header("Ragdoll")]
+    public Transform _followTarget;
+
 
     private void Awake()
     {

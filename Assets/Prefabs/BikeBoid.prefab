@@ -115,6 +115,37 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!1 &1412072550419270010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4325069513198406498}
+  m_Layer: 8
+  m_Name: RayCastCheckBack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4325069513198406498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412072550419270010}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.9166666, z: -1.64}
+  m_LocalScale: {x: 3.333333, y: 3.333333, z: 3.333333}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2717591649345648258}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4877491321849590061
 GameObject:
   m_ObjectHideFlags: 0
@@ -14569,6 +14600,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &6275545411749152311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7260537770984820009}
+  m_Layer: 8
+  m_Name: RayCastCheckFront
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7260537770984820009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275545411749152311}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.9166666, z: 1.32}
+  m_LocalScale: {x: 3.333333, y: 3.333333, z: 3.333333}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2717591649345648258}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9191088001056821916
 GameObject:
   m_ObjectHideFlags: 0
@@ -14615,7 +14677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layerMask:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 24576
   _maxAngle: 380
   _rayAngle: 25
   _rayLength: 5
@@ -14666,30 +14728,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74a4de492cd13b42b8402d305fb492e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 3
+  _maxSpeed: 15
   _currentSpeed: 0
   _accelerationDistance: 5
   _decelerationDistance: 5
   _smoothDampDuration: 0.1
   _turningSpeed: 5
+  _lerpSpeed: 2
   _turningDelay: 0.2
   _distanceToTarget: 0
-  _turning: 0
+  _obstacleTurning: 0
+  _frameRenderer: {fileID: 6370634311881027405}
+  _bikeAnimation: {fileID: 3097750268384383451}
   _playerTarget: {fileID: 0}
   _bikeController: {fileID: 0}
-  _stoppingDistance: 2.5
+  _stoppingDistance: 1.2
   _obstacleDetection: {fileID: 9191088001056821918}
   _frameFrequency: 1
-  _boidsDetectionRange: 1.5
+  _boidsDetectionRange: 2
   _goToTargetDir: {x: 0, y: 0, z: 0}
   _avoidObstacleDir: {x: 0, y: 0, z: 0}
-  _targetDir: {x: 0, y: 0, z: 0}
+  _currentTargetDir: {x: 0, y: 0, z: 0}
+  _previousTargetDir: {x: 0, y: 0, z: 0}
   _coherenceDir: {x: 0, y: 0, z: 0}
   _separationDir: {x: 0, y: 0, z: 0}
+  _playerSeparationDir: {x: 0, y: 0, z: 0}
+  _playerForwardDir: {x: 0, y: 0, z: 0}
   _obstaclePriority: 500
   _chasingPriority: 1
   _coherencePriority: 1
-  _separationPriority: 0.1
+  _separationPriority: 1
+  _playerSeparationPriority: 0.7
+  _playerForwardPriority: 0.3
+  _groundRaycastTransformFront: {fileID: 7260537770984820009}
+  _groundRaycastTransformBack: {fileID: 4325069513198406498}
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 127
   _transformDirection: {fileID: 0}
 --- !u!1001 &2466963560231457129
 PrefabInstance:
@@ -15012,7 +15087,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 3f5d47e53808997429eabe3c264df568, type: 2}
+      objectReference: {fileID: 2100000, guid: 7bf37cae677eb4d4a95f50db2d631d66, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8b8d6ae423bcf54883b91cae70eb6a3, type: 3}
 --- !u!1 &58723689325983564 stripped
@@ -15106,7 +15181,7 @@ MonoBehaviour:
   _rightPedaleBone: {fileID: 2126318498682971978}
   _turnDuration: 1.5
   bikeController: {fileID: 0}
-  isPlayer: 1
+  isPlayer: 0
 --- !u!1 &3487444994961221054 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1322245159182496983, guid: b8b8d6ae423bcf54883b91cae70eb6a3,
@@ -15161,6 +15236,12 @@ Transform:
 --- !u!4 &5316651340237052232 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1444282807898421215, guid: b8b8d6ae423bcf54883b91cae70eb6a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2466963560231457129}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6370634311881027405 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8815057874582027812, guid: b8b8d6ae423bcf54883b91cae70eb6a3,
     type: 3}
   m_PrefabInstance: {fileID: 2466963560231457129}
   m_PrefabAsset: {fileID: 0}
