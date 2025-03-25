@@ -14728,7 +14728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74a4de492cd13b42b8402d305fb492e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 15
+  _maxSpeed: 20
   _currentSpeed: 0
   _accelerationDistance: 5
   _decelerationDistance: 5
@@ -14755,9 +14755,9 @@ MonoBehaviour:
   _playerSeparationDir: {x: 0, y: 0, z: 0}
   _playerForwardDir: {x: 0, y: 0, z: 0}
   _obstaclePriority: 500
-  _chasingPriority: 1
+  _chasingPriority: 2
   _coherencePriority: 1
-  _separationPriority: 1
+  _separationPriority: 0.7
   _playerSeparationPriority: 0.7
   _playerForwardPriority: 0.3
   _groundRaycastTransformFront: {fileID: 7260537770984820009}

@@ -19,6 +19,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore(int score)
 	{
-        scoreText.text =  score + "pts";
+        scoreText.text =  score + " $";
 	}
 }

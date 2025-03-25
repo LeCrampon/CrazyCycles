@@ -339,7 +339,7 @@ public class BikeAudio : MonoBehaviour
             _lowerGearFadeCoroutine = null;
             _bikeLoopSlowAudioSource.pitch = 1;
             _bikeLoopSlowAudioSource.volume = 0;
-            Debug.Log("========= Stopping Fade! =============");
+            //Debug.Log("========= Stopping Fade! =============");
         }
     }
 
@@ -351,7 +351,7 @@ public class BikeAudio : MonoBehaviour
             _higherGearFadeCoroutine = null;
             _bikeLoopFastAudioSource.pitch = 1;
             _bikeLoopFastAudioSource.volume = 0;
-            Debug.Log("========= Stopping fade! =============");
+            //Debug.Log("========= Stopping fade! =============");
         }
 
     }

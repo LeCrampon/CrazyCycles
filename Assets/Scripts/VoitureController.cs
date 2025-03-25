@@ -136,11 +136,12 @@ public class VoitureController : MonoBehaviour
                         nextWayPoint = tempWayPoint;
 
                         //Calcul de distance entre les deux waypoints (précedent et suivant)
-                        distanceFromPrevToNext = Vector3.Distance(nextWayPoint.transform.position, previousWayPoint.transform.position);
+                        if(nextWayPoint != null && previousWayPoint != null)
+                            distanceFromPrevToNext = Vector3.Distance(nextWayPoint.transform.position, previousWayPoint.transform.position);
 
                         // Waypoint trouvé
                         _nextWaypointFound = true;
-
+                        Debug.Log("Found? "  + _nextWaypointFound);
                         //Vérification: est-ce que le prochain waypoint est une courbe ou une redlight
                         nextWayPointisRedlight = nextWayPoint.GetComponent<Waypoint>().isRedLight;
                         nextWayPointisCurve = nextWayPoint.GetComponent<Waypoint>().isCurve;
